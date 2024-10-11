@@ -427,7 +427,7 @@ This Python script provides a basic inventory management system that allows user
 This script provides a foundation for a basic inventory management system.
 
 
-## Descriptive Stock Analysis: A Python Script
+## Descriptive Stock Analysis: 
 
 ### Introduction
 
@@ -499,6 +499,7 @@ Calculates various statistical measures for each numeric column:
 - **Output Formatting:**
 Prints the calculated statistics for each column in a clear and readable format.
 
+
         def descriptive_stock_analysis(df):
 
             # Select only numeric columns      ###this data cleaning is not required for provided data it is just for practice
@@ -558,5 +559,141 @@ Place your stock data in an Excel file named stock_data.xlsx.
 
 This script provides a foundation for basic descriptive stock analysis
 
+## Stock Price Analysis with Moving Averages: 
+
+### Introduction
+
+This Python script analyzes historical stock price data and visualizes it with moving averages. It utilizes the pandas library for data manipulation, matplotlib and seaborn for plotting, and yfinance (not shown in this code) to download the data (refer to the previous section for data download).
+
+### Code Breakdown:
+
+- **Import Libraries:** Imports necessary libraries for data manipulation (pandas), plotting (matplotlib, seaborn), and date formatting (matplotlib.dates).
+- **Load Data (Assumed):** The code assumes a DataFrame df containing stock data (date, open price, etc.) is loaded from an Excel file named stock_data.xlsx (refer to the previous section for data download steps).
+- **Calculate Moving Averages:**
+    - Creates a copy of the DataFrame (df_plot) to avoid modifying the original data.
+    - Calculates the 50-day and 20-day moving averages for the 'Open' price column using the rolling function and stores them in new columns.
+- **Data Visualization:**
+    - Uses df_plot.plot() to create a line chart.
+    - Sets the 'Date' column as the x-axis and 'Open', '50_day_moving_average', and '20_day_moving_average' columns as the y-axis.
+- **Format x-axis:**
+    - Sets the x-axis limits to exclude the first 50 data points (to avoid initial fluctuations affecting the view).
+    - Formats the x-axis labels as dates using matplotlib.dates.DateFormatter.
+    - Adds labels and title to the plot for clarity.
+- **Display Plot:** Displays the generated line chart using plt.show().
+
+### Sample code
+
+    plt.xlim(start_date, None)  # Set the start date 
+    date_format = mdates.DateFormatter('%Y-%m-%d') 
+    plt.gca().xaxis.set_major_formatter(date_format)
+    plt.xlabel('Date')
+    plt.ylabel('Price')
+    plt.title('Stock Price vs. 50-Day Moving Average')
+    plt.legend()
+    plt.show()  # Display the plot
+
+### Image Insights
+
+![moving_Average](stock_descriptive_analysis\images\moving_average.png)
+
+The image depicts a line chart visualizing the stock's opening price alongside its 50-day and 20-day moving averages. This helps identify trends and potential support/resistance levels in the stock price movement.
+
+- The 50-day moving average represents a smoother trend compared to the more volatile daily open price.
+- The 20-day moving average is even more sensitive to recent price changes.
+- Crossovers between the price and moving averages can signal potential trend reversals, although this is not a guaranteed trading strategy.
 
 
+## Analyzing Daily Stock Returns with a Histogram: 
+
+### Introduction
+
+This Python script analyzes daily stock returns from an Excel file and visualizes their distribution using a histogram. It utilizes the pandas library for data manipulation, seaborn for plotting, and numpy (imported but not used in this specific code) for numerical operations.
+
+### Code Breakdown:
+
+- **Import Libraries:** Imports necessary libraries for data manipulation (pandas), plotting (seaborn), and scientific computing (numpy - although not used in this particular code).
+- **Load Data:** Reads stock data from an Excel file named stock_data.xlsx using pd.read_excel().
+- **Calculate Daily Returns:**
+    - Adds a new column named 'Daily_Returns' to the DataFrame.
+    - Calculates the daily percentage change in closing price using pct_change().
+    Handle Missing Values: Drops rows with missing values in the DataFrame using dropna(inplace=True).
+- **Filter Data (Optional):**
+    - Creates a new DataFrame df_fil containing data where daily returns are within a specified range (min_value and max_value). This step is optional and filters out extreme outliers.
+- **Plot Histogram:**
+    - Creates a histogram using sns.histplot() to visualize the distribution of daily returns in the filtered DataFrame (df_fil).
+    - Sets the number of bins (bins=30), disables kernel density estimation (kde=False), and uses a blue color.
+- **Customize Plot:**
+    - Adds a title, labels for the x and y-axis, and a legend for clarity.
+    - Uses plt.tight_layout() to improve spacing between elements.
+- **Display Plot:** Displays the generated histogram using plt.show().
+
+**Sample Code**
+
+    plt.figure(figsize=(10, 6))
+
+    sns.histplot(df_fil['Daily_Returns'], bins=30, kde=False, stat='density', color='blue', label='Daily Returns')
+
+    plt.title('Histogram of Daily Returns with Normal Distribution Curve')
+    plt.xlabel('Daily Returns')
+    plt.ylabel('Density')
+    plt.legend()
+
+
+    plt.tight_layout()
+    plt.show()
+
+### Image Insights
+
+![histogram](stock_descriptive_analysis\images\histogram_stock.png)
+
+The image depicts a histogram representing the distribution of daily stock returns. The x-axis shows the range of daily returns, and the y-axis shows the density (frequency) of each return value. A normal distribution curve is often used as a reference to visually assess how closely the actual data resembles a normal distribution.
+
+- The data in this example appears to be somewhat centered around zero, with most daily returns falling within a small range around the mean.
+- The absence of a tail on either side suggests the data may not perfectly follow a normal distribution, but it can be a helpful starting point for further analysis.
+
+## Visualizing Stock Price and Volume: A Python Script
+
+### Introduction
+
+This Python script creates a combination chart to visualize the relationship between stock prices and trading volume over time. It utilizes the pandas library for data manipulation, matplotlib and seaborn for plotting, and matplotlib.dates for handling date-time data.
+
+### Code Breakdown:
+
+- **Import Libraries:** Imports necessary libraries for data manipulation (pandas), plotting (matplotlib, seaborn), and date-time handling (matplotlib.dates).
+- **Load Data:** Reads stock data from an Excel file named stock_data.xlsx using pd.read_excel().
+- **Convert Date to DateTime:** Converts the 'Date' column to a datetime format using pd. 
+- **to_datetime()** for accurate time-series plotting.
+
+**Create Subplots:**
+- Creates a figure and a pair of subplots using 
+    plt.subplots().
+- Assigns the subplots to the variables ax (main) and ax1 (twin).
+
+**Volume Bar Chart:**
+- Uses ax.bar() to create a bar chart on the primary axis (ax) representing the daily trading volume.
+- Sets the 'Date' column as the x-axis and the 'Volume' column as the y-axis.
+- Sets the label for the bar series as 'volume' and the color to red.
+
+**Price Line Chart:**
+- Uses ax1.plot() to create a line chart on the secondary axis (ax1) representing the daily closing price.
+- Sets the 'Date' column as the x-axis and the 'Close' column as the y-axis.
+- Sets the label for the line series as 'Close Price'.
+
+**Customize Plot:**
+- Sets the title of the plot to 'Price vs Volume'.
+- Sets the y-axis limits for the volume chart (primary axis) to range from 0 to the maximum volume value in the data.
+- Sets the x-axis label for both charts to 'Date' (since they share the x-axis).
+
+**Display Plot:** (code not shown, but assumed) Displays the generated combination chart using plt.show().
+
+### Image Insights
+
+![volume/price](stock_descriptive_analysis\images\volume_price.png)
+
+The image depicts a combination chart where the primary axis (left-hand side) shows a bar chart representing the daily trading volume, and the secondary axis (right-hand side) shows a line chart representing the daily closing price. Both charts share the same x-axis (date).
+
+- This visualization allows you to observe potential correlations between price movements and trading volume.
+- High volume bars often coincide with significant price changes, either up or down, indicating periods of increased trading activity.
+- Lower volume bars may suggest quieter trading periods with smaller price fluctuations.
+
+This script provides a basic example of creating a combination chart to visualize stock price and volume. You can adapt and extend it to suit your specific needs and incorporate additional data or analysis techniques.
