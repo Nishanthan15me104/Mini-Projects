@@ -688,7 +688,7 @@ This Python script creates a combination chart to visualize the relationship bet
 
 ### Image Insights
 
-![volume/price](./stock_descriptive_analysis\images\volume_price.png)
+![Volume/Price](stock_descriptive_analysis/images/volume_price.png)
 
 The image depicts a combination chart where the primary axis (left-hand side) shows a bar chart representing the daily trading volume, and the secondary axis (right-hand side) shows a line chart representing the daily closing price. Both charts share the same x-axis (date).
 
