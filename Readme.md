@@ -427,8 +427,136 @@ This Python script provides a basic inventory management system that allows user
 This script provides a foundation for a basic inventory management system.
 
 
-## Stock Analysis 
+## Descriptive Stock Analysis: A Python Script
 
-### Descriptive Analysis
+### Introduction
+
+This Python script performs descriptive statistical analysis on a given dataset of stock data. It calculates various statistical measures such as mean, median, mode, standard deviation, variance, range, skewness, and kurtosis for each numeric column in the dataset.
+
+### Loading Data
+
+This Python script downloads historical stock data for a specified ticker symbol and saves it as an Excel file for further analysis. It utilizes the yfinance library to fetch financial data and pandas for data manipulation and file handling.
+
+- **Data Acquisition:** Downloads historical stock data using the yfinance library.
+- **User-Defined Ticker:** Allows users to specify the desired ticker symbol.
+- **Customizable Time Range:** Enables users to define the start and end date for data retrieval.
+- **Excel Output:** Saves the downloaded data to an Excel file for convenient access.
+
+**Code Breakdown:**
+
+- **Import Libraries:** Imports the pandas library for data manipulation and yfinance for accessing financial data.
+- **Define Ticker Symbol:** Sets the variable ticker to the desired stock ticker symbol (e.g., 'HDFCBANK.NS'which is used for analysis).
+- **Set Date Range:** Defines the start and end dates for data retrieval using pd.Timestamp and pd.DateOffset.
+    - start: One year before the current date.
+    - today: The current date.
+-  **Download Stock Data:** Downloads historical stock data for the specified ticker symbol and date range using yf.download().
+- **Save Data to Excel:** Saves the downloaded data as an Excel file named stock_data.xlsx using data.to_excel(). The index=False argument ensures row indices aren't saved in the Excel file
+
+        import pandas as pd
+        import yfinance as yf
+
+        ## to load stock data using yfinance and save as excel named data
+        ticker = 'HDFCBANK.NS'
+
+        today = pd.Timestamp.today()
+
+        start = today - pd.DateOffset(years=1)
+
+        data = yf.download(tickers=ticker,start = start, end = today)
+
+        ## Data saved as excel to load as data frame
+        data.to_excel('stock_data.xlsx',index = False )
+        # load excel as data frame 
+        df = pd.read_excel('stock_data.xlsx')
+
+### Key Features:
+
+- **Data Loading:** Loads stock data from an Excel file using pandas.read_excel().
+
+- **Data Cleaning:** Handles missing values by filling them with the mean of the respective column.
+
+- **Statistical Calculations:** Calculates mean, median, mode, standard deviation, variance, range, skewness, and kurtosis for each numeric column.
+
+- **Output Formatting:** Displays the calculated statistics in a clear and readable format.
+
+### Code Breakdown:
+
+- **Import Libraries:** Imports the necessary libraries pandas for data manipulation and numpy for numerical operations.
+- **Load Data:** Loads the stock data from the Excel file into a pandas DataFrame.
+- **Data Cleaning:**
+Selects only numeric columns for analysis.
+Calculates the mean for each numeric column and fills missing values with the mean.
+- **Statistical Calculations:**
+Calculates various statistical measures for each numeric column:
+    - Mean: The average value of the column.
+    - Median: The middle value of the column when sorted.
+    - Mode: The most frequent value in the column.
+    Standard Deviation: A measure of dispersion of the data.
+    - Variance: The square of the standard deviation.
+    - Range: The difference between the maximum and minimum values.
+    - Skewness: A measure of the asymmetry of the distribution.
+    - Kurtosis: A measure of the tailedness of the distribution.
+- **Output Formatting:**
+Prints the calculated statistics for each column in a clear and readable format.
+
+        def descriptive_stock_analysis(df):
+
+            # Select only numeric columns      ###this data cleaning is not required for provided data it is just for practice
+            numerical_col = df.select_dtypes(include = [int,float]).columns
+
+            # Calculate mean for numeric columns
+            df_mean = df[numerical_col].mean()
+
+            # Fill missing values with the calculated mean
+            dff = df.fillna(df_mean)
+
+            ##calculation of descriptive statistics of the given stock data 
+
+            mean          = dff.mean()
+            median        = dff.median()
+            mode          = dff.mode()
+            SD            = dff.std()
+            variance      = dff.var()
+            range         = dff.max() -df.min()
+            skewness      = dff.skew()
+            kurtosis      = dff.kurtosis()
+
+            ## for is used to iterate over all columns and provide descriptive s\taistics
+
+            for column, mean_value in mean.items():
+            print(f"The mean of column {column} is: {mean_value:.2f}")
+
+            for column, median_value in median.items():
+            print(f"The median of column {column} is: {median_value:.2f}")
+            
+            for column in mode.columns:
+                mode_value = mode[column].iloc[0]     # mode has multiple values this assign the first value
+                print(f"The mode of column {column} is: {mode_value}")
+
+            for column, SD_value in SD.items():
+            print(f"The standard deviation of column {column} is: {SD_value:.2f}")
+
+            for column, variance_value in variance.items():
+            print(f"The varince of column {column} is: {variance_value:.2f}")
+            
+            for column, range_value in range.items():
+            print(f"The range of column {column} is: {range_value:.2f}")
+
+            for column, skewness_value in skewness.items():
+            print(f"The skewness of column {column} is: {skewness_value:.2f}")
+
+            for column, kurtosis_value in kurtosis.items():
+            print(f"The kurtosis of column {column} is: {kurtosis_value:.2f}")
+
+
+### Usage:
+
+- Save the script as a Python file .
+Place your stock data in an Excel file named stock_data.xlsx.
+- Run the script using a Python interpreter.
+- The script will output the descriptive statistics for each numeric column in the stock data
+
+This script provides a foundation for basic descriptive stock analysis
+
 
 
